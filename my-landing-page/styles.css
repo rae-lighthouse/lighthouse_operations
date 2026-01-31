@@ -252,6 +252,15 @@ h3 {
     color: var(--color-text-light);
 }
 
+.services-subheader {
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1.15rem;
+    max-width: 700px;
+    margin: 40px auto 0;
+    line-height: 1.7;
+}
+
 /* Pricing */
 .pricing {
     padding: 100px 0;
@@ -336,6 +345,18 @@ h3 {
     margin-top: 16px;
     margin-bottom: 0;
     line-height: 1.7;
+}
+
+.pricing-scope-note {
+    color: var(--color-text-light);
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.pricing-scope-note strong {
+    color: var(--color-text);
 }
 
 .pricing-section {
@@ -653,6 +674,13 @@ h3 {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
     border-color: rgba(2, 132, 199, 0.3);
+}
+
+.work-stat {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 12px;
 }
 
 .work-card h3 {
