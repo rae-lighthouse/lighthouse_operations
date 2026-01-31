@@ -181,6 +181,8 @@ h3 {
 
 .hero-content {
     max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .hero-subtitle {
@@ -193,6 +195,7 @@ h3 {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Value Prop */
@@ -506,6 +509,7 @@ h3 {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
+    table-layout: fixed;
 }
 
 .reference-table th,
