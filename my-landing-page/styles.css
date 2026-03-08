@@ -446,15 +446,12 @@ p { color: var(--text-mid); }
 
 .value-proposition .section-title {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  max-width: 740px;
-  margin: 0 auto 40px;
+  margin: 0 0 40px;
   line-height: 1.35;
-  text-align: center;
+  text-align: left;
 }
 
 .value-proposition-content {
-  max-width: 680px;
-  margin: 0 auto;
   text-align: justify;
   text-align-last: left;
 }
@@ -715,8 +712,6 @@ p { color: var(--text-mid); }
   grid-template-columns: 200px 1fr;
   gap: 64px;
   align-items: start;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 .about-photo {
