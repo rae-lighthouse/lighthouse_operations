@@ -707,6 +707,7 @@ p { color: var(--text-mid); }
   height: 180px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center top;
   border: 3px solid var(--border-mid);
   box-shadow: var(--shadow-md);
   filter: grayscale(15%);
