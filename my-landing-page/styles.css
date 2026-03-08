@@ -5,7 +5,7 @@
    Fonts: Instrument Serif (display) + DM Sans (body)
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 
 /* ============================================
    TOKENS
@@ -38,7 +38,7 @@
   --border-mid:  rgba(10, 16, 30, 0.14);
 
   /* Type */
-  --font-serif:  'Instrument Serif', Georgia, serif;
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
   --font-sans:   'DM Sans', system-ui, sans-serif;
 
   /* Motion */
@@ -86,7 +86,7 @@ ul { list-style: none; }
 a { color: inherit; text-decoration: none; }
 
 .container {
-  max-width: 1160px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 28px;
 }
@@ -159,15 +159,15 @@ p { color: var(--text-mid); }
 }
 
 .btn-primary {
-  background: var(--ink);
+  background: var(--teal);
   color: var(--white);
-  border-color: var(--ink);
+  border-color: var(--teal);
 }
 .btn-primary:hover {
-  background: var(--ink-mid);
-  border-color: var(--ink-mid);
+  background: #156868;
+  border-color: #156868;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(14,17,23,0.18);
+  box-shadow: 0 4px 12px rgba(26,128,128,0.28);
 }
 
 .btn-secondary {
@@ -215,7 +215,7 @@ p { color: var(--text-mid); }
 
 .logo {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   color: var(--text);
   letter-spacing: 0.01em;
 }
@@ -425,7 +425,8 @@ p { color: var(--text-mid); }
 .value-proposition-content {
   max-width: 680px;
   margin: 0 auto;
-  text-align: center;
+  text-align: justify;
+  text-align-last: left;
 }
 
 .value-proposition-content p {
@@ -498,6 +499,10 @@ p { color: var(--text-mid); }
 .pricing-header h3 {
   font-size: 1.1rem;
   margin-bottom: 10px;
+}
+
+.pricing-card.featured .pricing-header h3 {
+  padding-right: 96px;
 }
 
 .availability {
