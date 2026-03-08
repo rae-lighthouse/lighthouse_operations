@@ -302,8 +302,30 @@ p { color: var(--text-mid); }
   z-index: 1;
 }
 
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 72px;
+  align-items: center;
+}
+
 .hero-content {
-  max-width: 720px;
+  max-width: 620px;
+}
+
+.hero-image {
+  flex-shrink: 0;
+}
+
+.hero-headshot {
+  width: 340px;
+  height: 420px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: var(--radius-xl);
+  border: 3px solid var(--border-mid);
+  box-shadow: var(--shadow-lg);
+  filter: grayscale(10%);
 }
 
 .hero-eyebrow {
@@ -916,6 +938,21 @@ p { color: var(--text-mid); }
     max-width: 560px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .hero-image {
+    order: -1;
+  }
+
+  .hero-headshot {
+    width: 220px;
+    height: 270px;
+    margin: 0 auto;
   }
 }
 
