@@ -502,21 +502,6 @@ p { color: var(--text-mid); }
   position: relative;
 }
 
-/* Featured tag — quiet, not flashy */
-.pricing-card.featured::before {
-  content: 'Most popular';
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--teal);
-  background: var(--teal-dim);
-  padding: 4px 10px;
-  border-radius: 20px;
-}
 
 .pricing-header {
   padding: 22px 22px 16px;
