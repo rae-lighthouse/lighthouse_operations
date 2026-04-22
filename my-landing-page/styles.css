@@ -859,7 +859,7 @@ p { color: var(--text-mid); }
    ============================================ */
 .footer {
   background: var(--ink);
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.9);
   padding: 64px 0 28px;
 }
 
@@ -872,7 +872,7 @@ p { color: var(--text-mid); }
 
 .footer .logo {
   font-family: var(--font-serif);
-  color: rgba(255,255,255,0.9);
+  color: #ffffff;
   font-size: 1.05rem;
   display: block;
   margin-bottom: 12px;
@@ -884,7 +884,7 @@ p { color: var(--text-mid); }
 }
 
 .footer h4 {
-  color: rgba(255,255,255,0.5);
+  color: #ffffff;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -894,14 +894,14 @@ p { color: var(--text-mid); }
 .footer-links li { margin-bottom: 10px; }
 .footer-links a {
   font-size: 0.875rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.9);
   transition: color var(--fast) var(--ease);
 }
-.footer-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-links a:hover { color: #ffffff; }
 
 .footer-contact p {
   font-size: 0.875rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.9);
 }
 
 .footer-bottom {
