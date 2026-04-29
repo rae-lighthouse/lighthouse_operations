@@ -602,7 +602,6 @@ p { color: var(--text-mid); }
   padding: 16px 22px 22px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 14px;
 }
 
@@ -628,7 +627,7 @@ p { color: var(--text-mid); }
     font-style: italic;
     font-size: 0.9rem;
     color: #555;
-    margin-bottom: 0.75rem;
+   margin-top: auto;
 }
 
 /* ============================================
