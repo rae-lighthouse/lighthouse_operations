@@ -624,6 +624,13 @@ p { color: var(--text-mid); }
   width: 100%;
 }
 
+.pricing-starting-from {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.75rem;
+}
+
 /* ============================================
    QUICK REFERENCE TABLE
    ============================================ */
