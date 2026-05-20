@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regulatory Intelligence Agent — Lighthouse Ops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:         #0E1117;
+      --ink-mid:     #1C2333;
+      --ink-soft:    #2D3748;
+      --slate:       #4A5568;
+      --mist:        #8896A8;
+      --fog:         #C4CDD9;
+      --paper:       #F7F4EF;
+      --paper-warm:  #EDE9E2;
+      --white:       #FDFCFB;
+
+      --teal:        #1A8080;
+      --teal-light:  #22A5A5;
+      --teal-dim:    rgba(26, 128, 128, 0.12);
+
+      --bg:          var(--white);
+      --surface:     var(--paper);
+      --surface-2:   var(--paper-warm);
+      --text:        var(--ink);
+      --text-mid:    var(--slate);
+      --text-light:  var(--mist);
+      --border:      rgba(10, 16, 30, 0.08);
+      --border-mid:  rgba(10, 16, 30, 0.14);
+
+      --font-serif:  'Cormorant Garamond', Georgia, serif;
+      --font-sans:   'DM Sans', system-ui, sans-serif;
+
+      --ease:        cubic-bezier(0.16, 1, 0.3, 1);
+      --fast:        180ms;
+      --mid:         320ms;
+
+      --radius-sm:   6px;
+      --radius:      10px;
+      --radius-lg:   18px;
+
+      --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:   0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .container-wide {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ---- NAV ---- */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 0;
+      background: rgba(253, 252, 251, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: padding var(--mid) var(--ease), box-shadow var(--mid) var(--ease);
+    }
+
+    .navbar.scrolled { padding: 12px 0; box-shadow: var(--shadow-sm); }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      transition: color var(--fast) var(--ease);
+    }
+    .nav-back:hover { color: var(--teal); }
+
+    /* ---- HEADER ---- */
+    .case-header {
+      padding: 128px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-eyebrow span { color: var(--text-light); }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      color: var(--text);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .header-lede {
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 600px;
+      margin-bottom: 36px;
+    }
+
+    .header-meta-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .meta-value {
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      font-weight: 400;
+    }
+
+    /* ---- VIDEO ---- */
+    .video-section {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--ink);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0; left: 0;
+      border: none;
+    }
+
+    /* ---- BODY CONTENT ---- */
+    main {
+      padding: 72px 0 96px;
+    }
+
+    .case-body {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 72px;
+      align-items: start;
+    }
+
+    /* ---- PROSE ---- */
+    .prose h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin: 48px 0 16px;
+      line-height: 1.2;
+    }
+
+    .prose h2:first-child { margin-top: 0; }
+
+    .prose p {
+      font-size: 1rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .prose p:last-child { margin-bottom: 0; }
+
+    .prose strong { color: var(--text); font-weight: 500; }
+
+    /* ---- CALLOUT BLOCKS ---- */
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+
+    .callout p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .callout-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ---- FAILURE POINTS ---- */
+    .failure-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .failure-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+
+    .failure-item h4 {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .failure-item p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ---- SIDEBAR ---- */
+    .sidebar {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .sidebar-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .stack-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stack-list li {
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      padding: 6px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+    }
+
+    .sidebar-card p {
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--teal-dim);
+      color: var(--teal);
+      border: 1px solid rgba(26,128,128,0.2);
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ---- BACK LINK ---- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--teal);
+      margin-top: 56px;
+      transition: gap var(--fast) var(--ease);
+    }
+
+    .back-link:hover { gap: 12px; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.9);
+      padding: 40px 0 28px;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .footer-right {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .footer-right a { color: var(--teal-light); }
+
+    /* ---- FADE UP ---- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .case-body { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .header-meta-row { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="logo" href="https://lighthouseops.biz">Lighthouse Ops</a>
+    <a class="nav-back" href="/portfolio">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to portfolio
+    </a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="case-header">
+  <div class="container">
+    <p class="header-eyebrow">
+      Case Study <span>/</span> Automation
+    </p>
+    <h1>Canadian Financial<br><em>Regulatory Intelligence</em> Agent</h1>
+    <p class="header-lede">
+      A compliance monitoring system that scrapes Canadian financial regulatory bodies on a schedule, maps updates to affected internal workflows using AI reasoning, and delivers structured briefings to Slack -- with a built-in critic layer that audits its own conclusions.
+    </p>
+    <div class="header-meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Type</span>
+        <span class="meta-value">Personal build</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value">Shipped</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Stack</span>
+        <span class="meta-value">Python, Claude API, Slack</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div class="video-section">
+  <div class="container-wide">
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/_CRWI0GiyHo"
+        title="Canadian Financial Regulatory Agent Demo"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<main>
+  <div class="container-wide">
+    <div class="case-body">
+
+      <!-- PROSE -->
+      <div class="prose fade-up">
+
+        <h2>What a human can do now</h2>
+        <p>A compliance officer at a Canadian fintech can monitor OSFI, FINTRAC, and CSA simultaneously and receive a structured, reasoned briefing within minutes of a regulatory update being published.</p>
+        <p>Previously, this required an analyst to manually read each source, cross-reference updates against internal processes, assess materiality, and write up a recommended action. In a scaling environment with multiple regulated product lines and quarterly release cycles, that process requires increasing headcount to maintain. The automated system scales without headcount.</p>
+
+        <h2>Live example</h2>
+        <p>During development, the system processed a live FINTRAC update on extortion-related money laundering. It correctly identified AML Transaction Monitoring as the primary affected workflow, flagged KYC Onboarding as a secondary impact, and caught a non-obvious connection to Data Retention and Privacy through an information-sharing obligation the primary mapping missed.</p>
+
+        <div class="callout">
+          <span class="callout-label">Why that last catch matters</span>
+          <p>The information-sharing obligation wasn't flagged in the primary mapping because it wasn't the direct subject of the update. The critic layer, running a second pass over the full reasoning chain, identified it as a downstream consequence. In a manual process, that connection surfaces weeks later -- or not at all.</p>
+        </div>
+
+        <h2>How the AI is used</h2>
+        <p>The system handles four things: detecting new regulatory updates by scraping OSFI, FINTRAC, and CSA; mapping changes to affected workflows using semantic reasoning against a workflow library; generating recommended actions with confidence levels; and auditing its own mapping with a critic layer that checks for missed workflows, false positives, and miscalibrated confidence.</p>
+        <p>The critic output appears in the same Slack briefing so the compliance officer sees where the AI is uncertain, not just its conclusions.</p>
+
+        <h2>Where AI stops</h2>
+        <p>The system never triggers a process change. A compliance officer must approve the mapping before anything happens downstream, with their name and timestamp logged against every decision. Override decisions require a documented reason.</p>
+        <p>This boundary exists because a misclassified obligation or missed filing deadline is not just a product bug -- it could be a regulatory violation. The compliance officer's role shifts from manual research to judgment, accountability, and remediation oversight.</p>
+        <p>On approval, the system automatically notifies the process owner of each affected workflow with the recommended action, source link, and a calculated remediation deadline. The audit trail captures the full chain from regulatory update to human decision to owner notification.</p>
+
+        <h2>What breaks first</h2>
+        <div class="failure-list">
+          <div class="failure-item">
+            <h4>Failure Point 1 — Workflow Library</h4>
+            <p>At five workflows Claude reasons over everything in context. At 500, it fails on context limits, latency, and cost. The fix is a vector store with semantic retrieval.</p>
+          </div>
+          <div class="failure-item">
+            <h4>Failure Point 2 — Hallucinated Confidence</h4>
+            <p>The mapping engine may flag connections that sound plausible but don't reflect real regulatory obligation. The critic layer watches for this. At higher volume, confidence thresholds and feedback loops from logged override decisions would manage false positive rates.</p>
+          </div>
+          <div class="failure-item">
+            <h4>Failure Point 3 — Source Coverage</h4>
+            <p>The scraper monitors three bodies today. A dedicated scraper per body works short term, but a more resilient architecture would use a generalized scraper or integrate with an existing regulatory intelligence feed to avoid maintaining custom parsers across a growing list of sources.</p>
+          </div>
+        </div>
+
+        <h2>Next steps</h2>
+        <p>Optimize Slack output for readability at scale. Currently the briefing shows the full reasoning per workflow -- a production version would show a two-sentence summary with full reasoning available on demand, to reduce notification fatigue.</p>
+
+        <a href="/portfolio" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to portfolio
+        </a>
+
+      </div><!-- end prose -->
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar fade-up">
+
+        <div class="sidebar-card">
+          <span class="sidebar-label">Stack</span>
+          <ul class="stack-list">
+            <li>Python</li>
+            <li>Claude API</li>
+            <li>Slack API / Bolt</li>
+            <li>BeautifulSoup</li>
+            <li>Scheduled Jobs</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <span class="sidebar-label">Regulatory Sources</span>
+          <ul class="stack-list">
+            <li>OSFI</li>
+            <li>FINTRAC</li>
+            <li>CSA</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <span class="sidebar-label">Tags</span>
+          <div class="tag-list">
+            <span class="tag">Automation</span>
+            <span class="tag">AI Agent</span>
+            <span class="tag">Compliance</span>
+            <span class="tag">Fintech</span>
+            <span class="tag">Python</span>
+            <span class="tag">Slack</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <span class="sidebar-label">Interested in something similar?</span>
+          <p>This kind of system can be adapted for any regulated industry -- benefits, insurance, healthcare. If you're monitoring regulatory bodies manually, there's a version of this that works for your stack.</p>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-left">Lighthouse Ops</span>
+    <span class="footer-right"><a href="mailto:rae@lighthouseops.biz">rae@lighthouseops.biz</a></span>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
